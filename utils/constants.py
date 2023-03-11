@@ -1,0 +1,6 @@
+SUB_REDITS = "subRedits"
+TO_UPLOAD = "toUpload"
+CURRENT_SUBREDIT_INDEX = "currentSubredditIndex"
+DESC_REMOVE_LIST = "descRemoveList"
+DESC_ADD_LIST = "descAddList"
+DESC_DEFAULT = "descDefault"
