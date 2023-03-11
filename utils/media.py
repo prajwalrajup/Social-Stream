@@ -9,8 +9,7 @@ class Media():
     # initlilize all the folder structure of data
     def __init__(self, id):
         path = os.path
-        self.baseDir = path.dirname(path.dirname(path.realpath(__file__)))
-        print(f"using {self.baseDir} as the base url")
+        self.baseDir = directory.getBaseDirectory()
         self.dataDir = directory.makeDirIfNotExists(self.baseDir, "data")
         self.imageDir = directory.makeDirIfNotExists(self.dataDir, "images")
         self.idDir = directory.makeDirIfNotExists(self.imageDir, id)
@@ -21,10 +20,10 @@ class Media():
             f.write(content)
 
     # download the content from the url and save it in the locaiton
-    def getMedia(self, submission):
+    def getMedia(self, submission, fileName):
         request = requests.get(submission.url.lower())
         imagePath = directory.pathJoin(
-            self.idDir, f"Post-{submission.id}{submission.url.lower()[-4:]}")
+            self.idDir, fileName)
         self.writeContentToFile(imagePath, request.content)
         return imagePath
 

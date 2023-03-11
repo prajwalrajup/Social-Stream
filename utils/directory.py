@@ -25,8 +25,24 @@ def makeDirIfNotExists(baseDir, dirName):
         return targetDir
 
 
+def dosePathExists(locaion):
+    return os.path.exists(locaion)
+
+
+def deleteFile(location):
+    if (dosePathExists(location)):
+        print(f"deleting file {location}")
+        os.remove(location)
+    else:
+        print(f"file dose not exists to delete")
+
+
 def pathJoin(*paths):
     basePath = ""
     for path in paths:
         basePath = os.path.join(basePath, path)
     return basePath
+
+
+def getBaseDirectory():
+    return os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
