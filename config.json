@@ -1,16 +1,14 @@
 {
-  "subRedits": ["GetMotivated", "meme", "sdf", "sdf", "sdf"],
+  "subRedits": [
+    "GetMotivated",
+    "MotivationalPics",
+    "MotivationalThoughts",
+    "memes",
+    "Motivational",
+    "inspirobot"
+  ],
   "currentSubredditIndex": 0,
-  "toUpload": {
-    "Post-11ohofw.jpg": {
-      "image": "/Users/prajwal.r2/PersonalProjects/Reddit-instagram-bot/data/images/2023-03-12_GetMotivated/Post-11ohofw.jpg",
-      "desc": "success \n\nsubreddit source : https://www.reddit.com/r/GetMotivated\n\n\n#instamotivation #motivationmonday #mitivation #lifemotivation #lifestyle #inspirationalquotes #quote #inspire"
-    },
-    "Post-11op44d.jpg": {
-      "image": "/Users/prajwal.r2/PersonalProjects/Reddit-instagram-bot/data/images/2023-03-12_GetMotivated/Post-11op44d.jpg",
-      "desc": " when the wrong people leave your life\n\nsubreddit source : https://www.reddit.com/r/GetMotivated\n\n\n#instamotivation #motivationmonday #mitivation #lifemotivation #lifestyle #inspirationalquotes #quote #inspire"
-    }
-  },
+  "toUpload": {},
   "descRemoveList": [
     "[image]",
     "anal",
