@@ -43,7 +43,7 @@ def buildDesc(data, desc, subredditName):
         desc = data[DESC_DEFAULT]
     
     # add the subreddit source
-    desc += f"\n\nsubreddit source : https://www.reddit.com/r/{subredditName}"
+    desc += f"\n\nCredit goes to respective owner \n\n ----DECLARATION: This video/audio/photo is not own by ourselves. \n Credit subreddit source : https://www.reddit.com/r/{subredditName}"
     
     # add the elemts to be added into the desc
     for addElement in data[DESC_ADD_LIST]:
