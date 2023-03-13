@@ -74,3 +74,7 @@ if (isSuccess):
 
 # write the data file to config json
 utils.writeJson(jsonFileLocation, data)
+
+
+# cron string
+# */1 * * * * python3 /home/prajwal/instagramBot/Reddit-instagram-bot/main.py >> /home/prajwal/instagramBot/Reddit-instagram-bot/cronOutput.txt

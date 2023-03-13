@@ -45,4 +45,5 @@ class Instagram():
         # if upload fails due to login issues delete the device dump file
         except (ClientLoginRequired, PhotoNotUpload) as e:
             print(f"something went wrong while uploading to instagram : '{e}'")
-            directory.deleteFile(self.dumpFileLocation)
+            if(e["debug_info"]["type"] != "ProcessingFailedError"):
+                directory.deleteFile(self.dumpFileLocation)
