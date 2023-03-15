@@ -3,6 +3,11 @@ import requests
 from PIL import Image
 import utils.directory as directory
 
+from loggingConfig import configure_logging, logging
+
+# Configure logging
+configure_logging()
+
 
 class Media():
 
@@ -16,6 +21,7 @@ class Media():
 
     # write contents give to a file locaion
     def writeContentToFile(self, locaion, content):
+        logging.info("writing contents to file")
         with open(locaion, 'wb') as f:
             f.write(content)
 
@@ -41,9 +47,17 @@ class Media():
             # Fixed by height
             resize_width = round(ratio_h * image.width)
             resize_height = scale[1]
-        image_resize = image.resize(
-            (resize_width, resize_height), Image.ANTIALIAS)
-        image_resize.save(locaion)
+
+        try:
+
+            image_resize = image.resize(
+                (resize_width, resize_height), Image.ANTIALIAS)
+            image_resize.save(locaion)
+            return False
+
+        except (Exception) as e:
+            logging.error(f"something went wrong while resizing image : {e}")
+            return True
 
         # if locaion[-3:] == "gif":
         #     resiseGif(locaion, scale, iamge)

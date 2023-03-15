@@ -5,6 +5,11 @@ from utils.instagram import Instagram
 import utils.utils as utils
 import utils.directory as directory
 from utils.constants import *
+from loggingConfig import configure_logging, logging
+
+# Configure logging
+configure_logging()
+
 
 # get the data from the config file
 jsonFileLocation = directory.pathJoin(
@@ -34,7 +39,8 @@ def collectData():
             if (redditbot.checkIfPostIsValidFormat(submission)):
                 fileName = f"Post-{submission.id}{submission.url.lower()[-4:]}"
                 fileLocaion = media.getMedia(submission, fileName)
-                media.resize(fileLocaion)
+                if (media.resize(fileLocaion)):
+                    continue
 
                 # build an object to be saved in json
                 toUploadObject = {
@@ -45,9 +51,9 @@ def collectData():
                 toUpload = data[TO_UPLOAD]
                 toUpload[fileName] = toUploadObject
                 data[TO_UPLOAD] = toUpload
-    
+
     if (len(data[TO_UPLOAD]) == 0):
-        print("No valid posts to be saved")
+        logging.error("No valid posts to be saved")
         return False
     else:
         return True
@@ -74,7 +80,7 @@ if (isSuccess):
 
 # write the data file to config json
 utils.writeJson(jsonFileLocation, data)
-
+logging.info("------------------------------------------------->")
 
 # cron string
 # */1 * * * * python3 /home/prajwal/instagramBot/Reddit-instagram-bot/main.py >> /home/prajwal/instagramBot/Reddit-instagram-bot/cronOutput.txt
