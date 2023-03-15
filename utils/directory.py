@@ -1,11 +1,15 @@
 import os
+from loggingConfig import configure_logging, logging
+
+# Configure logging
+configure_logging()
 
 # method to create director if it dose not exists
 
 
 def makeDirIfNotExists(baseDir, dirName):
     if (baseDir == None or dirName == None):
-        print("Base dir or dir name is none")
+        logging.error("Base dir or dir name is none")
         return
 
     targetDir = os.path.join(baseDir, dirName)
@@ -17,7 +21,7 @@ def makeDirIfNotExists(baseDir, dirName):
             os.makedirs(targetDir, exist_ok=True)
             return targetDir
         except OSError as error:
-            print(f"someting went wrong while creating dir : {error}")
+            logging.error(f"someting went wrong while creating dir : {error}")
             return None
 
     # return the director location if it exists
@@ -31,10 +35,10 @@ def dosePathExists(locaion):
 
 def deleteFile(location):
     if (dosePathExists(location)):
-        print(f"deleting file {location}")
+        logging.info(f"deleting file {location}")
         os.remove(location)
     else:
-        print(f"file dose not exists to delete")
+        logging.error(f"file dose not exists to delete")
 
 
 def pathJoin(*paths):
