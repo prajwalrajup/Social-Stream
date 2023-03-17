@@ -1,3 +1,4 @@
+import os
 from utils.redit import RedditBot
 from utils.media import Media
 from PIL import Image
@@ -6,6 +7,7 @@ import utils.utils as utils
 import utils.directory as directory
 from utils.constants import *
 from loggingConfig import configure_logging, logging
+import utils.Bot as DiscordBot
 
 # Configure logging
 configure_logging()
@@ -39,7 +41,9 @@ def collectData():
                 # build an object to be saved in json
                 toUploadObject = {
                     "image": fileLocaion,
-                    "desc": utils.buildDesc(data, submission.title, subReditName)
+                    "desc": utils.buildDesc(data, submission.title, subReditName),
+                    "url": submission.url,
+                    "subredditName": subReditName
                 }
 
                 toUpload = data[TO_UPLOAD]
@@ -63,11 +67,14 @@ def uploadMedia():
     instagram.uploadImageToInstagram(
         toUploadObject[1]["image"], toUploadObject[1]["desc"])
 
+    DiscordBot.botRun(
+        f'Uploaded {toUploadObject[1]["url"]} from {toUploadObject[1]["subredditName"]} ')
     # remove the object from the toUploadList
     del toUploadList[toUploadObject[0]]
     data[TO_UPLOAD] = toUploadList
 
-try :
+
+try:
     # get the data from the config file
     jsonFileLocation = directory.pathJoin(
         directory.getBaseDirectory(), "config.json")
@@ -82,7 +89,10 @@ try :
     logging.info("------------------------------------------------->")
 
 except Exception as e:
-    logging.exception("An error occurred: {e}")
+    import traceback
+    DiscordBot.botRun(
+        f"An error occurred in {os.getenv('accountName') } with exception {e}  with trace \n {traceback.format_exc()}", DISCORD_INCEDENT_CHANNEL)
+    logging.exception(f"An error occurred: {e}")
 
 # cron string
 # */1 * * * * python3 /home/prajwal/instagramBot/Reddit-instagram-bot/main.py >> /home/prajwal/instagramBot/Reddit-instagram-bot/cronOutput.txt
