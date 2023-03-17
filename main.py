@@ -11,12 +11,6 @@ from loggingConfig import configure_logging, logging
 configure_logging()
 
 
-# get the data from the config file
-jsonFileLocation = directory.pathJoin(
-    directory.getBaseDirectory(), "config.json")
-data = utils.readJson(jsonFileLocation)
-
-
 def collectData():
     # run if the to upload object is None
     if (len(data[TO_UPLOAD]) == 0):
@@ -73,14 +67,22 @@ def uploadMedia():
     del toUploadList[toUploadObject[0]]
     data[TO_UPLOAD] = toUploadList
 
+try :
+    # get the data from the config file
+    jsonFileLocation = directory.pathJoin(
+        directory.getBaseDirectory(), "config.json")
+    data = utils.readJson(jsonFileLocation)
 
-isSuccess = collectData()
-if (isSuccess):
-    uploadMedia()
+    isSuccess = collectData()
+    if (isSuccess):
+        uploadMedia()
 
-# write the data file to config json
-utils.writeJson(jsonFileLocation, data)
-logging.info("------------------------------------------------->")
+    # write the data file to config json
+    utils.writeJson(jsonFileLocation, data)
+    logging.info("------------------------------------------------->")
+
+except Exception as e:
+    logging.exception("An error occurred: {e}")
 
 # cron string
 # */1 * * * * python3 /home/prajwal/instagramBot/Reddit-instagram-bot/main.py >> /home/prajwal/instagramBot/Reddit-instagram-bot/cronOutput.txt
