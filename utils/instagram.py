@@ -46,10 +46,13 @@ class Instagram():
     #     self.client.logout()
 
     # Post the image to instagram
-    def uploadImageToInstagram(self, locaion, description):
+    def uploadImageToInstagram(self, locaion, description, isVideo = False):
         logging.info(f"posting image to instagram with locaion {locaion}")
         try:
-            self.client.photo_upload(locaion, description)
+            if(isVideo):
+                self.client.clip_upload(locaion, description)
+            else :
+                self.client.photo_upload(locaion, description)
 
         # if upload fails due to login issues delete the device dump file
         except (ClientLoginRequired, PhotoNotUpload) as e:
