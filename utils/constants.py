@@ -1,8 +1,11 @@
-SUB_REDITS = "subRedits"
-TO_UPLOAD = "toUpload"
-CURRENT_SUBREDIT_INDEX = "currentSubredditIndex"
-DESC_REMOVE_LIST = "descRemoveList"
-DESC_ADD_LIST = "descAddList"
-DESC_DEFAULT = "descDefault"
-DISCORD_APPLICATION_CHANNEL = "discordBotApplicationChatId"
-DISCORD_INCEDENT_CHANNEL = "discordBotIncedentChatId"
+# description
+DESC_REMOVE_LIST = "moderationRemoveList"
+DESC_BUILD = "build"
+
+# source types
+SOURCE_REDDIT ="reddit"
+SOURCE_INSTAGRAM = "instagram"
+
+# DISCORD
+DISCORD_APPLICATION_CHANNEL = "application"
+DISCORD_INCEDENT_CHANNEL = "incedent"

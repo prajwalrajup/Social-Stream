@@ -2,7 +2,6 @@ import os
 import requests
 from PIL import Image
 import utils.directory as directory
-
 from loggingConfig import configure_logging, logging
 
 # Configure logging
@@ -26,8 +25,9 @@ class Media():
             f.write(content)
 
     # download the content from the url and save it in the locaiton
-    def getMedia(self, submission, fileName):
-        request = requests.get(submission.url.lower())
+    def getMedia(self, url, fileName):
+        logging.info(f"getting media from {url}")
+        request = requests.get(url)
         imagePath = directory.pathJoin(
             self.idDir, fileName)
         self.writeContentToFile(imagePath, request.content)
@@ -49,29 +49,13 @@ class Media():
             resize_height = scale[1]
 
         try:
-
             image_resize = image.resize(
                 (resize_width, resize_height), Image.ANTIALIAS)
             image_resize.save(locaion)
             return False
 
         except (Exception) as e:
-            logging.error(f"something went wrong while resizing image : {e}")
-            return True
-
-        # if locaion[-3:] == "gif":
-        #     resiseGif(locaion, scale, iamge)
-        # else:
-        #     image = image.resize(scale)
-        #     image.save(locaion)
-
-        # backGround = Image.new("L", scale, 0)
-        # # backGround.paste(image_resize, ((scale[0] - image.width) // 2, (scale[1] - image.height) // 2))
-        # if(backGround.width == scale[0]):
-        #     backGround.paste(image_resize, (0, (scale[1] - image.height) // 2))
-        # else:
-        #     backGround.paste(image_resize, ((scale[0] - image.width) // 2, 0))
-        # backGround.save(locaion)
+            raise Exception(f"something went wrong while resizing image : {e}")
 
     def resiseGif(self, locaion, scale, image):
         old_gif_information = {
