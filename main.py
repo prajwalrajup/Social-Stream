@@ -74,19 +74,16 @@ def uploadMedia():
     data[TO_UPLOAD] = toUploadList
 
 
-try:
-    # get the data from the config file
-    jsonFileLocation = directory.pathJoin(
-        directory.getBaseDirectory(), "config.json")
-    data = utils.readJson(jsonFileLocation)
+# get the data from the config file
+jsonFileLocation = directory.pathJoin(
+    directory.getBaseDirectory(), "config.json")
+data = utils.readJson(jsonFileLocation)
 
+
+try:
     isSuccess = collectData()
     if (isSuccess):
         uploadMedia()
-
-    # write the data file to config json
-    utils.writeJson(jsonFileLocation, data)
-    logging.info("------------------------------------------------->")
 
 except Exception as e:
     import traceback
@@ -94,5 +91,10 @@ except Exception as e:
         f"An error occurred in {os.getenv('accountName') } with exception {e}  with trace \n {traceback.format_exc()}", DISCORD_INCEDENT_CHANNEL)
     logging.exception(f"An error occurred: {e}")
 
+finally:
+    # write the data file to config json
+    utils.writeJson(jsonFileLocation, data)
+    logging.info("------------------------------------------------->")
+    
 # cron string
 # */1 * * * * python3 /home/prajwal/instagramBot/Reddit-instagram-bot/main.py >> /home/prajwal/instagramBot/Reddit-instagram-bot/cronOutput.txt
