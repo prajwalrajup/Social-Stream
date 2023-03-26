@@ -63,15 +63,17 @@ def uploadMedia():
     toUploadObject = next(iter(toUploadList.items()))
 
     # upload the image with desc to instagram
-    instagram = Instagram()
-    instagram.uploadImageToInstagram(
-        toUploadObject[1]["image"], toUploadObject[1]["desc"])
+    try:
+        instagram = Instagram()
+        instagram.uploadImageToInstagram(
+            toUploadObject[1]["image"], toUploadObject[1]["desc"])
+    finally:
+        # remove the object from the toUploadList
+        del toUploadList[toUploadObject[0]]
+        data[TO_UPLOAD] = toUploadList
 
     DiscordBot.botRun(
         f'Uploaded {toUploadObject[1]["url"]} from {toUploadObject[1]["subredditName"]} ')
-    # remove the object from the toUploadList
-    del toUploadList[toUploadObject[0]]
-    data[TO_UPLOAD] = toUploadList
 
 
 # get the data from the config file

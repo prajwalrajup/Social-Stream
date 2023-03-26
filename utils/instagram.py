@@ -55,5 +55,8 @@ class Instagram():
         except (ClientLoginRequired, PhotoNotUpload) as e:
             logging.error(
                 f"something went wrong while uploading to instagram : '{e}'")
-            if (json.loads(e.message)["debug_info"]["type"] != "ProcessingFailedError"):
+            
+            # check if processing error if it is dont dump the seesion
+            errorResponse = json.loads(e.message)
+            if ("debug_info" not in errorResponse or "type" not in errorResponse["debug_info"] or errorResponse["debug_info"]["type"] != "ProcessingFailedError"):
                 directory.deleteFile(self.dumpFileLocation)
