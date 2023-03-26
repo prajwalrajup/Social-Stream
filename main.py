@@ -1,11 +1,16 @@
-import os
+from utils.yaml import init, getConfig
+
+# load yaml file
+init()
+accountName = getConfig("instagram")["username"]
+sourceConfig = getConfig("source")
+
 from utils.redit import RedditBot
 from utils.media import Media
-from PIL import Image
 from utils.instagram import Instagram
 import utils.utils as utils
 import utils.directory as directory
-from utils.constants import *
+from utils.Constants import *
 from loggingConfig import configure_logging, logging
 import utils.Bot as DiscordBot
 
@@ -13,90 +18,62 @@ import utils.Bot as DiscordBot
 configure_logging()
 
 
-def collectData():
-    # run if the to upload object is None
-    if (len(data[TO_UPLOAD]) == 0):
+def instagramSourceUpload(hashtagName):
+    
+    instagram = Instagram()                                                    # initilize instagram
+    instagramMedia = instagram.getImagesFromHashtags(hashtagName)              # get post from instagram
+    media = Media(utils.getTimeStampAndSourceName(hashtagName))                # initilize folder structure
+    mediaType = instagram.getMediaType(instagramMedia["thumbnail_url"])        
+    fileName = f"Post-instagram-{instagramMedia['code']}.{mediaType}"
+    fileLocaion = media.getMedia(instagramMedia["thumbnail_url"], fileName)
 
-        # update the subredt index
-        utils.updateCurrentSubredditIndex(data)
-        subReditName = data[SUB_REDITS][data[CURRENT_SUBREDIT_INDEX]]
+    desc = utils.buildDesc("", instagramMedia["user"]["username"], SOURCE_INSTAGRAM)
+    instagram.uploadImageToInstagram(fileLocaion, desc)
+    return instagramMedia["thumbnail_url"]
 
-        # initilize redit and median
-        redditbot = RedditBot()
-        media = Media(utils.getTimeStampAndReditName(subReditName))
+def redditSourceUpload(subReditName):
+    # initilize redit and median
+    redditbot = RedditBot()
+    media = Media(utils.getTimeStampAndSourceName(subReditName))
+    submission = redditbot.getPosts(subReditName)
+    fileName = f"Post-reddit-{submission.id}{submission.url.lower()[-4:]}"
+    fileLocaion = media.getMedia(submission.url.lower(), fileName)
+    media.resize(fileLocaion)
+    desc = utils.buildDesc(submission.title, subReditName, SOURCE_REDDIT)
 
-        # get n number of posts depending on number of subredits
-        submissions = redditbot.getPosts(
-            subReditName, (24 // len(data[SUB_REDITS])))
+    # initilize instagram
+    instagram = Instagram()
+    instagram.uploadImageToInstagram(fileLocaion, desc)
+    return submission.url.lower()
 
-        # save and resize all the images of submissions
-        for submission in submissions:
-            # validate the submission is valid to be posted
-            if (redditbot.checkIfPostIsValidFormat(submission)):
-                fileName = f"Post-{submission.id}{submission.url.lower()[-4:]}"
-                fileLocaion = media.getMedia(submission, fileName)
-                if (media.resize(fileLocaion)):
-                    continue
+# MAIN script
 
-                # build an object to be saved in json
-                toUploadObject = {
-                    "image": fileLocaion,
-                    "desc": utils.buildDesc(data, submission.title, subReditName),
-                    "url": submission.url,
-                    "subredditName": subReditName
-                }
+# Define a dictionary mapping case values to corresponding functions
+case_handlers = {
+    SOURCE_REDDIT: redditSourceUpload,
+    SOURCE_INSTAGRAM: instagramSourceUpload
+}
 
-                toUpload = data[TO_UPLOAD]
-                toUpload[fileName] = toUploadObject
-                data[TO_UPLOAD] = toUpload
+try :
+    for key, value in sourceConfig["sequence"][utils.getCurrentHour()].items():
+        logging.info(f"Processing to upload image from {key} - {value}")
+        # Get the function object corresponding to the case value
+        handler_func = case_handlers.get(key)
 
-    if (len(data[TO_UPLOAD]) == 0):
-        logging.error("No valid posts to be saved")
-        return False
-    else:
-        return True
+        # Call the function with the arguments
+        if handler_func:
+            fileUrl = handler_func(value)
+            DiscordBot.botRun(f'Uploaded {fileUrl} from {key} - {value} ')
+        else:
+            raise Exception(f"Invalid source found {key}")
 
-
-def uploadMedia():
-    # pick the first object from the toUploadList
-    toUploadList = data[TO_UPLOAD]
-    toUploadObject = next(iter(toUploadList.items()))
-
-    # upload the image with desc to instagram
-    try:
-        instagram = Instagram()
-        instagram.uploadImageToInstagram(
-            toUploadObject[1]["image"], toUploadObject[1]["desc"])
-    finally:
-        # remove the object from the toUploadList
-        del toUploadList[toUploadObject[0]]
-        data[TO_UPLOAD] = toUploadList
-
-    DiscordBot.botRun(
-        f'Uploaded {toUploadObject[1]["url"]} from {toUploadObject[1]["subredditName"]} ')
-
-
-# get the data from the config file
-jsonFileLocation = directory.pathJoin(
-    directory.getBaseDirectory(), "config.json")
-data = utils.readJson(jsonFileLocation)
-
-
-try:
-    isSuccess = collectData()
-    if (isSuccess):
-        uploadMedia()
-
-except Exception as e:
+except Exception as e: 
+    logging.error(e)
     import traceback
-    DiscordBot.botRun(
-        f"An error occurred in {os.getenv('accountName') } with exception {e}  with trace \n {traceback.format_exc()}", DISCORD_INCEDENT_CHANNEL)
-    logging.exception(f"An error occurred: {e}")
+    DiscordBot.botRun(f"An error occurred in {accountName} with exception {e}  with trace \n {traceback.format_exc()}", DISCORD_INCEDENT_CHANNEL)
 
 finally:
-    # write the data file to config json
-    utils.writeJson(jsonFileLocation, data)
     logging.info("------------------------------------------------->")
-    
+
 # cron string
 # */1 * * * * python3 /home/prajwal/instagramBot/Reddit-instagram-bot/main.py >> /home/prajwal/instagramBot/Reddit-instagram-bot/cronOutput.txt

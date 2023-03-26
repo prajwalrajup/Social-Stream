@@ -21,17 +21,21 @@ def makeDirIfNotExists(baseDir, dirName):
             os.makedirs(targetDir, exist_ok=True)
             return targetDir
         except OSError as error:
-            logging.error(f"someting went wrong while creating dir : {error}")
-            return None
+            raise Exception(
+                f"someting went wrong while creating dir : {error}")
 
     # return the director location if it exists
     else:
         return targetDir
 
 
+# return true if path exists
+
 def dosePathExists(locaion):
     return os.path.exists(locaion)
 
+
+# if the path exists delete the location
 
 def deleteFile(location):
     if (dosePathExists(location)):
@@ -40,6 +44,7 @@ def deleteFile(location):
     else:
         logging.error(f"file dose not exists to delete")
 
+# join multiple directritoires to build a paths
 
 def pathJoin(*paths):
     basePath = ""
@@ -47,6 +52,8 @@ def pathJoin(*paths):
         basePath = os.path.join(basePath, path)
     return basePath
 
+
+# returns the base dir
 
 def getBaseDirectory():
     return os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
