@@ -1,7 +1,8 @@
+import os
 from utils.yaml import init, getConfig
 
 # load yaml file
-init()
+init(os.path.dirname(os.path.abspath(__file__)))
 accountName = getConfig("instagram")["username"]
 sourceConfig = getConfig("source")
 

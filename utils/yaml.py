@@ -1,12 +1,13 @@
+import os
 import dynamic_yaml
 
 fileLocaion = "config.yaml"
 config = {}
 
 
-def init():
+def init(baseDir):
     global config
-    with open(fileLocaion) as fileobj:
+    with open(os.path.join(baseDir, fileLocaion)) as fileobj:
         config = dynamic_yaml.load(fileobj)
 
 
