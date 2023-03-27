@@ -10,7 +10,7 @@ from utils.media import Media
 from utils.instagram import Instagram
 import utils.utils as utils
 import utils.directory as directory
-from utils.Constants import *
+from utils.constants import *
 from loggingConfig import configure_logging, logging
 import utils.Bot as DiscordBot
 

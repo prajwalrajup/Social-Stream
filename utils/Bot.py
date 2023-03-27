@@ -1,5 +1,5 @@
 import discord
-from utils.Constants import *
+from utils.constants import *
 from utils.yaml import getConfig
 from loggingConfig import configure_logging, logging
 

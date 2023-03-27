@@ -1,7 +1,7 @@
 import json
 import datetime
 from utils.yaml import getConfig
-import utils.Constants as Constants
+import utils.constants as Constants
 
 from loggingConfig import configure_logging, logging
 
