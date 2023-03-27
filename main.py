@@ -1,3 +1,10 @@
+from utils.yaml import init, getConfig
+
+# load yaml file
+init()
+accountName = getConfig("instagram")["username"]
+sourceConfig = getConfig("source")
+
 import utils.Bot as DiscordBot
 from loggingConfig import configure_logging, logging
 from utils.constants import *
@@ -6,13 +13,6 @@ import utils.utils as utils
 from utils.instagram import Instagram
 from utils.media import Media
 from utils.redit import RedditBot
-from utils.yaml import init, getConfig
-
-# load yaml file
-init()
-accountName = getConfig("instagram")["username"]
-sourceConfig = getConfig("source")
-
 
 # Configure logging
 configure_logging()
@@ -75,7 +75,7 @@ try:
 
 except Exception as e:
     import traceback
-    logging.error(f"Error :{e} with {traceback.format_exc()}")
+    logging.error(f"Error : {e} with {traceback.format_exc()}")
     DiscordBot.botRun(
         f"An error occurred in {accountName} with exception {e}  with trace \n {traceback.format_exc()}", DISCORD_INCEDENT_CHANNEL)
 

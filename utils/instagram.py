@@ -87,7 +87,7 @@ class Instagram():
 
     def getMediaType(self, url):
         image_type_match = re.search(
-            r'(?<=\.)(jpg|jpeg|png|gif|webp)(?=\?)', url)
+            r'(?<=\.)(jpg|jpeg|png|gif|webp)(?=\?)', str(url))
 
         if image_type_match:
             return image_type_match.group()
