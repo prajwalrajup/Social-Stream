@@ -80,7 +80,7 @@ class Instagram():
 
     def checkIfPostIsValidFormat(self, media):
         # check if posted in last 24 hours
-        if (media["taken_at"] >= getTime24HoursAgo()):
+        if (media["taken_at"] >= getTime24HoursAgo() and self.getMediaType(media["thumbnail_url"]) != None):
             return True
         else:
             return False
@@ -92,4 +92,6 @@ class Instagram():
         if image_type_match:
             return image_type_match.group()
         else:
-            raise Exception(f"found unknown media type for url {url}")
+            raise None
+        
+
