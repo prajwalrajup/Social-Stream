@@ -23,10 +23,8 @@ def instagramSourceUpload(hashtagName):
 
     # initilize instagram
     instagram = Instagram()
-    instagramMedia = instagram.getImagesFromHashtags(
-        hashtagName)              # get post from instagram
-    media = Media(utils.getTimeStampAndSourceName(hashtagName)
-                  )                # initilize folder structure
+    instagramMedia = instagram.getImagesFromHashtags(hashtagName)            # get post from instagram
+    media = Media(utils.getTimeStampAndSourceName(hashtagName))              # initilize folder structure
     mediaType = instagram.getMediaType(instagramMedia["thumbnail_url"])
     fileName = f"Post-instagram-{instagramMedia['code']}.{mediaType}"
     fileLocaion = media.getMedia(instagramMedia["thumbnail_url"], fileName)

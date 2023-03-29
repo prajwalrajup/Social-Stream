@@ -76,7 +76,7 @@ class Instagram():
                 return media
 
         # if no posts are foud in the last 24 hours
-        return None
+        raise Exception(f"No valid posts found for {hashtagName}")
 
     def checkIfPostIsValidFormat(self, media):
         # check if posted in last 24 hours
