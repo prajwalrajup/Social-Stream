@@ -92,6 +92,6 @@ class Instagram():
         if image_type_match:
             return image_type_match.group()
         else:
-            raise None
+            return None
         
 
