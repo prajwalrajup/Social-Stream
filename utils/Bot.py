@@ -1,18 +1,22 @@
-import os
 import discord
 from utils.constants import *
-from dotenv import load_dotenv
+from utils.yaml import getConfig
 from loggingConfig import configure_logging, logging
 
 
-load_dotenv()
+# load config
+discordBotConfig = getConfig("discordBot")
+
+# Configure logging
 configure_logging()
 
-token = os.getenv('discordBotToken')
+token = discordBotConfig["token"]
 intents = discord.Intents.default()
+
 
 # inililzing discord client with default intents
 client = discord.Client(intents=intents, logging=logging)
+
 
 # Global message variable to be set externally and bot to be triggered
 message = ""
@@ -24,7 +28,7 @@ channelName = DISCORD_APPLICATION_CHANNEL
 async def on_ready():
     logging.info(f"Sending message to channel {channelName}")
     # find the channel with the channel ID
-    channel = client.get_channel(int(os.getenv(channelName)))
+    channel = client.get_channel(int(discordBotConfig["chatId"][channelName]))
     await channel.send(message)  # send the message from the global variable
     await client.close()  # close the client to stop the client blocking code
 
