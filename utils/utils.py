@@ -1,4 +1,5 @@
 import json
+import re
 import datetime
 from utils.yaml import getConfig
 import utils.constants as Constants
@@ -19,7 +20,7 @@ def getTimeStampAndSourceName(sourceName):
     return dateTime.strftime('%Y-%m-%d_') + sourceName
 
 def buildDesc(desc, originalSourceName, sourceType):
-    
+
     sourceRefrence = descConfig["sourceRefrence"][sourceType].replace(
         "<originalSourceName>", originalSourceName)
 
@@ -50,3 +51,6 @@ def getTime24HoursAgo():
 def getCurrentHour():
     now = datetime.datetime.now()
     return now.hour
+
+def removeFileExtention(location):
+    return re.sub(r'\.[^.\\/:*?"<>|\r\n]+$', '', location)

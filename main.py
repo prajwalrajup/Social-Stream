@@ -1,5 +1,5 @@
 import os
-from utils.yaml import init, getConfig
+from utils.yaml import init, getConfig, re
 
 # load yaml file
 baseDirectory = os.path.dirname(os.path.abspath(__file__))
@@ -61,13 +61,14 @@ def localVideoSourceUpload(key):
     instagram = Instagram()
 
     videosDirectory = directory.pathJoin(
-        directory.getBaseDirectory(), "videos")
+        directory.getBaseDirectory(), "data/videos")
     fileName = directory.getSortedListOfFilesInDirectory(videosDirectory)[0]
     fileLocaion = directory.pathJoin(videosDirectory, fileName)
 
-    desc = utils.buildDesc(f"Dad jokes are the best - {fileName}", "", Constants.SOURCE_LOCAL_VIDEO)
+    desc = utils.buildDesc(f"Dad jokes are the best - {utils.removeFileExtention(fileName)}", "", Constants.SOURCE_LOCAL_VIDEO)
     instagram.uploadImageToInstagram(fileLocaion, desc, True)
     directory.deleteFile(fileLocaion)
+    directory.deleteFile(fileLocaion+".jpg")
     return fileLocaion
 
 # MAIN script

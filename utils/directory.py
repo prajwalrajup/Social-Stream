@@ -1,4 +1,5 @@
 import os
+import re
 from loggingConfig import configure_logging, logging
 
 # Configure logging
@@ -58,6 +59,15 @@ def pathJoin(*paths):
 def getBaseDirectory():
     return os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
+def extract_number(filename):
+    match = re.search(r'\d+', filename)
+    if match:
+        return int(match.group())
+    else:
+        return float('inf')  # return a large number for filenames that do not contain a valid integer
+
+
 # return sorted list of files in a folder
 def getSortedListOfFilesInDirectory(location):
-    return sorted(os.listdir(location))
+    dirList = list(os.listdir(location))
+    return sorted(dirList, key=extract_number)
