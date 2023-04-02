@@ -1,5 +1,5 @@
 import os
-from utils.yaml import init, getConfig, re
+from utils.yaml import init, getConfig
 
 # load yaml file
 baseDirectory = os.path.dirname(os.path.abspath(__file__))
