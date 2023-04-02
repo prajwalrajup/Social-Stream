@@ -19,6 +19,7 @@ def getTimeStampAndSourceName(sourceName):
     return dateTime.strftime('%Y-%m-%d_') + sourceName
 
 def buildDesc(desc, originalSourceName, sourceType):
+    
     sourceRefrence = descConfig["sourceRefrence"][sourceType].replace(
         "<originalSourceName>", originalSourceName)
 

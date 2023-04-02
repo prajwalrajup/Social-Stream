@@ -57,3 +57,7 @@ def pathJoin(*paths):
 
 def getBaseDirectory():
     return os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+
+# return sorted list of files in a folder
+def getSortedListOfFilesInDirectory(location):
+    return sorted(os.listdir(location))
