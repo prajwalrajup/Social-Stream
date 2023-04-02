@@ -67,7 +67,7 @@ def localVideoSourceUpload(key):
 
     desc = utils.buildDesc(f"Dad jokes are the best - {fileName}", "", Constants.SOURCE_LOCAL_VIDEO)
     instagram.uploadImageToInstagram(fileLocaion, desc, True)
-
+    directory.deleteFile(fileLocaion)
     return fileLocaion
 
 # MAIN script
