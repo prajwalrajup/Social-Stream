@@ -132,6 +132,7 @@ dmypy.json
 
 # data files
 data
+videos
 
 # DS_Store
 .DS_Store
