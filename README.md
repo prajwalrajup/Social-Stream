@@ -42,5 +42,5 @@ Installation instriction can be found in the WIKI section
 
 ## License
 
-[MIT](/LICENSE)
+Social Stream is licensed under the GNU General Public License v3.0 license. See LICENSE for more information.
 
