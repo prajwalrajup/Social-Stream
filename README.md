@@ -40,6 +40,20 @@ Using Social Stream, users can set up customized feeds based on sources related 
 
 Installation instriction can be found in the WIKI section 
 
+## Tech Stack
+
+- python
+- pytorch
+- chatGPT 3.5
+- [wav2lip](https://github.com/Rudrabha/Wav2Lip)
+- dall e-2
+
+## Contributing
+
+Contributions are always welcome!
+
+If you would like to contribute to this project, please open an issue or submit a pull request on GitHub. We welcome contributions from the community and appreciate your feedback.
+
 ## License
 
 Social Stream is licensed under the GNU General Public License v3.0 license. See LICENSE for more information.
